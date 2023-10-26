@@ -1,0 +1,13 @@
+{
+  "version": "0.2.1",
+  "defaults": {},
+  "configurations": [
+    {
+      "type": "managed",
+      "name": "PrimeGen.csproj(1)",
+      "project": "PrimeGen.csproj",
+      "projectTarget": "",
+      "args": [32, 2]
+    }
+  ]
+}

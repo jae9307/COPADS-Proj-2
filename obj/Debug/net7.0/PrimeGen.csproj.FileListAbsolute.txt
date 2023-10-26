@@ -1,0 +1,14 @@
+C:\Users\joest\COPADS\PrimeGen\obj\Debug\net7.0\PrimeGen.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\joest\COPADS\PrimeGen\obj\Debug\net7.0\PrimeGen.AssemblyInfoInputs.cache
+C:\Users\joest\COPADS\PrimeGen\obj\Debug\net7.0\PrimeGen.AssemblyInfo.cs
+C:\Users\joest\COPADS\PrimeGen\obj\Debug\net7.0\PrimeGen.csproj.CoreCompileInputs.cache
+C:\Users\joest\COPADS\PrimeGen\bin\Debug\net7.0\PrimeGen.exe
+C:\Users\joest\COPADS\PrimeGen\bin\Debug\net7.0\PrimeGen.deps.json
+C:\Users\joest\COPADS\PrimeGen\bin\Debug\net7.0\PrimeGen.runtimeconfig.json
+C:\Users\joest\COPADS\PrimeGen\bin\Debug\net7.0\PrimeGen.dll
+C:\Users\joest\COPADS\PrimeGen\bin\Debug\net7.0\PrimeGen.pdb
+C:\Users\joest\COPADS\PrimeGen\obj\Debug\net7.0\PrimeGen.dll
+C:\Users\joest\COPADS\PrimeGen\obj\Debug\net7.0\refint\PrimeGen.dll
+C:\Users\joest\COPADS\PrimeGen\obj\Debug\net7.0\PrimeGen.pdb
+C:\Users\joest\COPADS\PrimeGen\obj\Debug\net7.0\PrimeGen.genruntimeconfig.cache
+C:\Users\joest\COPADS\PrimeGen\obj\Debug\net7.0\ref\PrimeGen.dll
