@@ -5,6 +5,14 @@ namespace PrimeGenerator
 {
     class Generator
     {
+        private static int count = 0;
+        private static int lockInUse = 0;
+
+        /*private Generator() {
+            this.count = 0;
+            this.lockInUse = 0;
+        }*/
+        
         private static Boolean rLoop(int r, BigInteger n, BigInteger x, BigInteger bigInteger)
         {
             for (int j = 0; j <= r - 2; j++)
@@ -78,7 +86,6 @@ namespace PrimeGenerator
         
         private static void generateNumbers(int num_bytes)
         {
-            int lockInUse = 0;
             Parallel.For(0, 50, (i, state) =>
             {
                 //BigInteger bigInteger = 236360317;
@@ -97,7 +104,8 @@ namespace PrimeGenerator
                     }*/
                     if (0 == Interlocked.Exchange(ref lockInUse, 1))
                     {
-                        Console.WriteLine(bigInteger.ToString());
+                        Console.WriteLine($"{count}: {bigInteger.ToString()}");
+                        count++;
                         //cts.Cancel();
                         //state.Break();
                         Interlocked.Exchange(ref lockInUse, 0);
@@ -112,14 +120,15 @@ namespace PrimeGenerator
         
         public static void Main(string[] args)
         {
+            //Generator generator = new Generator();
             int bits = int.Parse(args[0]);
             int amount_to_generate = int.Parse(args[1]);
 
             int num_bytes = bits / 8;
-            Parallel.For(0, amount_to_generate, count =>
+            for(int i = 0; i < amount_to_generate; i++)
             {
                 Generator.generateNumbers(num_bytes);
-            });
+            }
         }
     }
 }
