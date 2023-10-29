@@ -32,13 +32,13 @@ namespace PrimeGenerator
                 {
                     d = bigInteger / (two_raised/2);
                     r--;
-                    Console.WriteLine($"divided:  {(n/(two_raised / 2)).ToString()}");
+                    //Console.WriteLine($"divided:  {(n/(two_raised / 2)).ToString()}");
                     break;
                 }
                 r++;
             }
-            Console.WriteLine($"r:  {r.ToString()}");
-            Console.WriteLine($"d:  {d.ToString()}");
+            //Console.WriteLine($"r:  {r.ToString()}");
+            //Console.WriteLine($"d:  {d.ToString()}");
 
             for (int i = 0; i <= k-1; i++)
             {
@@ -47,7 +47,7 @@ namespace PrimeGenerator
                 BigInteger a = new BigInteger(array);
                 a = BigInteger.Abs(a);
                 a = a % (bigInteger - 2);
-                Console.WriteLine($"a:  {a.ToString()}");
+                //Console.WriteLine($"a:  {a.ToString()}");
                 if (a < 2)
                 {
                     a += 2;
@@ -68,28 +68,46 @@ namespace PrimeGenerator
             return true;
         }
         
-        private static void generateNumbers(int num_bytes)
+        private static BigInteger createOneNumber(int num_bytes)
         {
-            /*CancellationTokenSource cts = new CancellationTokenSource();
-            ParallelOptions parallelOptions = new ParallelOptions()
-            {
-                CancellationToken = cts.Token
-            };
-            Parallel.For(0, 50, parallelOptions, i =>
-            {*/
             byte[] array = new byte[num_bytes];
             RandomNumberGenerator.Create().GetBytes(array);
             BigInteger bigInteger = new BigInteger(array);
-            bigInteger = BigInteger.Abs(bigInteger);
-            //BigInteger bigInteger = 236360317;
-            Console.WriteLine($"b:  {bigInteger.ToString()}");
-            if (bigInteger % 2 == 0 || bigInteger <= 3) {
-                generateNumbers(num_bytes);
-                return;
-            }
-            Console.WriteLine(IsProbablyPrime(bigInteger));
-            //})
-            
+            return BigInteger.Abs(bigInteger);
+        }
+        
+        private static void generateNumbers(int num_bytes)
+        {
+            int lockInUse = 0;
+            Parallel.For(0, 50, (i, state) =>
+            {
+                //BigInteger bigInteger = 236360317;
+                //Console.WriteLine($"b:  {bigInteger.ToString()}");
+                BigInteger bigInteger = createOneNumber(num_bytes);
+                while (bigInteger % 2 == 0 || bigInteger <= 3)
+                {
+                    bigInteger = createOneNumber(num_bytes);
+                    return;
+                }
+                if (IsProbablyPrime(bigInteger))
+                {
+                    /*if (state.ShouldExitCurrentIteration)
+                    {
+                        return;
+                    }*/
+                    if (0 == Interlocked.Exchange(ref lockInUse, 1))
+                    {
+                        Console.WriteLine(bigInteger.ToString());
+                        //cts.Cancel();
+                        //state.Break();
+                        Interlocked.Exchange(ref lockInUse, 0);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+            });
         }
         
         public static void Main(string[] args)
