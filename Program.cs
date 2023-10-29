@@ -5,6 +5,21 @@ namespace PrimeGenerator
 {
     class Generator
     {
+        private static Boolean rLoop(int r, BigInteger n, BigInteger x, BigInteger bigInteger)
+        {
+            for (int j = 0; j <= r - 2; j++)
+            {
+                x = BigInteger.ModPow(x, (BigInteger)2, bigInteger);
+                //Console.WriteLine($"x2: {x.ToString()}");
+                if (x.Equals(n))
+                {
+                    //Console.WriteLine("Second continue");
+                    return true;
+                }
+            }
+            return false;
+        }
+        
         private static Boolean IsProbablyPrime(BigInteger bigInteger, int k = 10)
         {
             BigInteger n = bigInteger - 1;
@@ -25,34 +40,28 @@ namespace PrimeGenerator
             Console.WriteLine($"r:  {r.ToString()}");
             Console.WriteLine($"d:  {d.ToString()}");
 
-            for (int i = 0; i < k-1; i++)
+            for (int i = 0; i <= k-1; i++)
             {
                 byte[] array = new byte[bigInteger.GetByteCount()];
                 RandomNumberGenerator.Create().GetBytes(array);
                 BigInteger a = new BigInteger(array);
                 a = BigInteger.Abs(a);
                 a = a % (bigInteger - 2);
-                //Console.WriteLine($"a:  {a.ToString()}");
+                Console.WriteLine($"a:  {a.ToString()}");
                 if (a < 2)
                 {
                     a += 2;
                 }
                 BigInteger x = BigInteger.ModPow(a, d, bigInteger);
                 //Console.WriteLine($"x1: {x.ToString()}");
-                if (x == 1 || x == bigInteger-1)
+                if (x.IsOne || x.Equals(n))
                 {
                     //Console.WriteLine("First continue");
                     continue;
                 }
-                for (int j = 0; j < r-2; j++)
+                if (rLoop(r, n, x, bigInteger))
                 {
-                    x = BigInteger.ModPow(x, 2, bigInteger);
-                    //Console.WriteLine($"x2: {x.ToString()}");
-                    if (x == bigInteger-1)
-                    {
-                        //Console.WriteLine("Second continue");
-                        continue;
-                    }
+                    continue;
                 }
                 return false;
             }
@@ -70,9 +79,9 @@ namespace PrimeGenerator
             {*/
             byte[] array = new byte[num_bytes];
             RandomNumberGenerator.Create().GetBytes(array);
-            //BigInteger bigInteger = new BigInteger(array);
-            //bigInteger = BigInteger.Abs(bigInteger);
-            BigInteger bigInteger = 236360317;
+            BigInteger bigInteger = new BigInteger(array);
+            bigInteger = BigInteger.Abs(bigInteger);
+            //BigInteger bigInteger = 236360317;
             Console.WriteLine($"b:  {bigInteger.ToString()}");
             if (bigInteger % 2 == 0 || bigInteger <= 3) {
                 generateNumbers(num_bytes);
