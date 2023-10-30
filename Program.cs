@@ -7,6 +7,7 @@ namespace PrimeGenerator
     {
         private static int count = 0;
         private static int lockInUse = 0;
+        private static readonly object printLock = new object();
 
         /*private Generator() {
             this.count = 0;
@@ -86,10 +87,12 @@ namespace PrimeGenerator
         
         private static void generateNumbers(int num_bytes)
         {
-            Parallel.For(0, 50, (i, state) =>
+            Parallel.For(0, int.MaxValue, (i, state) =>
             {
-                //BigInteger bigInteger = 236360317;
-                //Console.WriteLine($"b:  {bigInteger.ToString()}");
+                if (state.IsStopped)
+                    {
+                        return;
+                    }
                 BigInteger bigInteger = createOneNumber(num_bytes);
                 while (bigInteger % 2 == 0 || bigInteger <= 3)
                 {
@@ -98,22 +101,24 @@ namespace PrimeGenerator
                 }
                 if (IsProbablyPrime(bigInteger))
                 {
-                    /*if (state.ShouldExitCurrentIteration)
+                    //if (0 == Interlocked.Exchange(ref lockInUse, 1))
+                    lock(printLock)
                     {
-                        return;
-                    }*/
-                    if (0 == Interlocked.Exchange(ref lockInUse, 1))
-                    {
+                        if (state.IsStopped)
+                        {
+                            return;
+                        }
+                        state.Stop();
                         Console.WriteLine($"{count}: {bigInteger.ToString()}");
                         count++;
                         //cts.Cancel();
                         //state.Break();
-                        Interlocked.Exchange(ref lockInUse, 0);
+                        //Interlocked.Exchange(ref lockInUse, 0);
                     }
-                    else
+                    /*else
                     {
                         return;
-                    }
+                    }*/
                 }
             });
         }
