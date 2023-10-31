@@ -164,6 +164,7 @@ namespace PrimeGenerator
         /* 
          * Parses arguments passed to program, calls helpMessage function if input is invalid,
          * calls and times generateNumbers function, and prints output to console
+         */
         public static void Main(string[] args)
         {
             if (args.Length < 2)
