@@ -24,10 +24,8 @@ namespace PrimeGenerator
             for (int j = 0; j <= r - 2; j++)
             {
                 x = BigInteger.ModPow(x, (BigInteger)2, bigInteger);
-                //Console.WriteLine($"x2: {x.ToString()}");
                 if (x.Equals(n))
                 {
-                    //Console.WriteLine("Second continue");
                     return true;
                 }
             }
@@ -58,13 +56,10 @@ namespace PrimeGenerator
                 {
                     d = bigInteger / (two_raised/2);
                     r--;
-                    //Console.WriteLine($"divided:  {(n/(two_raised / 2)).ToString()}");
                     break;
                 }
                 r++;
             }
-            //Console.WriteLine($"r:  {r.ToString()}");
-            //Console.WriteLine($"d:  {d.ToString()}");
 
             for (int i = 0; i <= k-1; i++)
             {
@@ -73,16 +68,13 @@ namespace PrimeGenerator
                 BigInteger a = new BigInteger(array);
                 a = BigInteger.Abs(a);
                 a = a % (bigInteger - 2);
-                //Console.WriteLine($"a:  {a.ToString()}");
                 if (a < 2)
                 {
                     a += 2;
                 }
                 BigInteger x = BigInteger.ModPow(a, d, bigInteger);
-                //Console.WriteLine($"x1: {x.ToString()}");
                 if (x.IsOne || x.Equals(n))
                 {
-                    //Console.WriteLine("First continue");
                     continue;
                 }
                 if (rLoop(r, n, x, bigInteger))
@@ -131,34 +123,42 @@ namespace PrimeGenerator
                         state.Stop();
                         Console.WriteLine($"{count}: {bigInteger.ToString()}");
                         count++;
-                        //cts.Cancel();
-                        //state.Break();
-                        //Interlocked.Exchange(ref lockInUse, 0);
                     }
-                    /*else
-                    {
-                        return;
-                    }*/
                 }
             });
         }
         
         public static void Main(string[] args)
         {
-            //Generator generator = new Generator();
+            if (args.Length < 2)
+            {
+                helpMessage();
+                return;
+            }
+            if (!int.TryParse(args[0], out _) || !int.TryParse(args[1], out _)) { 
+                helpMessage(); 
+                return; 
+            }
+            
             int bits = int.Parse(args[0]);
             int amount_to_generate = int.Parse(args[1]);
 
             int num_bytes = bits / 8;
+            Console.WriteLine($"BitLength: {bits.ToString()} bits");
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             for(int i = 0; i < amount_to_generate; i++)
             {
                 Generator.generateNumbers(num_bytes);
+                if (i < amount_to_generate - 1)
+                {
+                    Console.WriteLine("");
+                }
             }
             stopwatch.Stop();
             double timeElapsed = stopwatch.Elapsed.TotalSeconds;
-            Console.WriteLine($"Time to generate: {timeElapsed}");
+            TimeSpan timeSpan = TimeSpan.FromSeconds(timeElapsed);
+            Console.WriteLine(timeSpan.ToString(@"hh\:mm\:ss\.fffffff"));
         }
     }
 }
